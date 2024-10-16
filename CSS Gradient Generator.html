@@ -1,0 +1,216 @@
+<html><head><base href="https://websim.creation.engine/" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Gradient Generator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  .gradient-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .control-group {
+    flex: 1 1 200px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+  }
+  select, input[type="color"], input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  .color-stop {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .color-stop input[type="color"] {
+    width: 50px;
+    margin-right: 10px;
+  }
+  .color-stop input[type="number"] {
+    width: 60px;
+  }
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  #cssCode {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: monospace;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>CSS Gradient Generator</h1>
+    <div id="gradientPreview" class="gradient-preview"></div>
+    <div class="controls">
+      <div class="control-group">
+        <label for="gradientType">Gradient Type:</label>
+        <select id="gradientType">
+          <option value="linear">Linear</option>
+          <option value="radial">Radial</option>
+          <option value="conic">Conic</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="direction">Direction (Linear):</label>
+        <select id="direction">
+          <option value="to right">Left to Right</option>
+          <option value="to bottom">Top to Bottom</option>
+          <option value="to bottom right">Top Left to Bottom Right</option>
+          <option value="to bottom left">Top Right to Bottom Left</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="shape">Shape (Radial):</label>
+        <select id="shape">
+          <option value="circle">Circle</option>
+          <option value="ellipse">Ellipse</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="position">Position (Radial/Conic):</label>
+        <select id="position">
+          <option value="center">Center</option>
+          <option value="top left">Top Left</option>
+          <option value="top right">Top Right</option>
+          <option value="bottom left">Bottom Left</option>
+          <option value="bottom right">Bottom Right</option>
+        </select>
+      </div>
+    </div>
+    <div id="colorStops">
+      <div class="color-stop">
+        <input type="color" value="#ff0000">
+        <input type="number" min="0" max="100" value="0"> %
+      </div>
+      <div class="color-stop">
+        <input type="color" value="#0000ff">
+        <input type="number" min="0" max="100" value="100"> %
+      </div>
+    </div>
+    <button id="addColorStop">Add Color Stop</button>
+    <textarea id="cssCode" readonly></textarea>
+    <button id="copyCode">Copy CSS Code</button>
+  </div>
+
+  <script>
+    const gradientPreview = document.getElementById('gradientPreview');
+    const gradientType = document.getElementById('gradientType');
+    const direction = document.getElementById('direction');
+    const shape = document.getElementById('shape');
+    const position = document.getElementById('position');
+    const colorStops = document.getElementById('colorStops');
+    const addColorStop = document.getElementById('addColorStop');
+    const cssCode = document.getElementById('cssCode');
+    const copyCode = document.getElementById('copyCode');
+
+    function updateGradient() {
+      let gradient = '';
+      const type = gradientType.value;
+      const colorStopElements = colorStops.querySelectorAll('.color-stop');
+      const colors = Array.from(colorStopElements).map(stop => {
+        const color = stop.querySelector('input[type="color"]').value;
+        const position = stop.querySelector('input[type="number"]').value;
+        return `${color} ${position}%`;
+      }).join(', ');
+
+      if (type === 'linear') {
+        gradient = `linear-gradient(${direction.value}, ${colors})`;
+      } else if (type === 'radial') {
+        gradient = `radial-gradient(${shape.value} at ${position.value}, ${colors})`;
+      } else if (type === 'conic') {
+        gradient = `conic-gradient(from 0deg at ${position.value}, ${colors})`;
+      }
+
+      gradientPreview.style.background = gradient;
+      cssCode.value = `background: ${gradient};`;
+    }
+
+    function addNewColorStop() {
+      const newStop = document.createElement('div');
+      newStop.className = 'color-stop';
+      newStop.innerHTML = `
+        <input type="color" value="#000000">
+        <input type="number" min="0" max="100" value="50"> %
+      `;
+      colorStops.appendChild(newStop);
+      newStop.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', updateGradient);
+      });
+      updateGradient();
+    }
+
+    gradientType.addEventListener('change', () => {
+      direction.parentElement.style.display = gradientType.value === 'linear' ? 'block' : 'none';
+      shape.parentElement.style.display = gradientType.value === 'radial' ? 'block' : 'none';
+      position.parentElement.style.display = gradientType.value !== 'linear' ? 'block' : 'none';
+      updateGradient();
+    });
+
+    [direction, shape, position].forEach(el => {
+      el.addEventListener('change', updateGradient);
+    });
+
+    addColorStop.addEventListener('click', addNewColorStop);
+
+    colorStops.addEventListener('input', updateGradient);
+
+    copyCode.addEventListener('click', () => {
+      cssCode.select();
+      document.execCommand('copy');
+      alert('CSS code copied to clipboard!');
+    });
+
+    updateGradient();
+  </script>
+</body>
+</html>
