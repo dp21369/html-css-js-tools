@@ -1,71 +1,83 @@
-<html><head><base href="https://qrcodegen.webscreenshot.now.sh">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced QR Code Generator</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<style>
+<html>
 
-    .container-qr-code {
-        text-align: center;
-        background-color: white;
-        padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        width: 100%;
-    }
+<head>
+    <base href="https://qrcodegen.webscreenshot.now.sh">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced QR Code Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        .container-qr-code {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
 
-    .container-qr-code * {
+        .container-qr-code * {
             color: #000;
         }
-        
-    label {
-        display: block;
-        text-align: left;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-    }
-    input, select {
-        width: 100%;
-        padding:5px;
-        height: 50px;
-        margin-bottom: 1rem;
-        box-sizing: border-box;
-    }
-    button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 0.5rem 1rem;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    #qrcode {
-        margin-top: 1rem;
-        display: inline-block;
-    }
-</style>
 
-<div class="container-qr-code">
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 5px;
+            height: 50px;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+
+        .container-qr-code button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button.generate-btn {
+            display: block;
+            margin: 0 auto;
+        }
+
+        #qrcode {
+            display: flex;
+            margin: 20px auto;
+            justify-content: center;
+        }
+    </style>
+
+    <div class="container-qr-code">
         <label for="text">Text or URL:</label>
         <input type="text" id="text" placeholder="Enter text or URL">
-        
+
         <label for="size">QR Code Size (px):</label>
         <input type="number" id="size" placeholder="QR Code size (px)" value="128" min="64" max="512">
-        
+
         <label for="color">QR Code Color:</label>
         <input type="color" id="color" value="#000000">
-        
-        <button onclick="generateQRCode()">Generate QR Code</button>
+
+        <button class="generate-btn" onclick="generateQRCode()">Generate QR Code</button>
         <div id="qrcode"></div>
-        <button onclick="savePNG()">Save as PNG</button>
-        <button onclick="printQR()">Print QR Code</button>
+        <button class="save-btn" onclick="savePNG()">Save as PNG</button>
+        <button class="print-btn" onclick="printQR()">Print QR Code</button>
     </div>
 
     <script>
@@ -76,10 +88,10 @@
             const size = parseInt(document.getElementById('size').value);
             const color = document.getElementById('color').value;
             const qrcodeContainer = document.getElementById('qrcode');
-            
+
             // Clear previous QR code
             qrcodeContainer.innerHTML = '';
-            
+
             // Generate new QR code
             qrCode = new QRCode(qrcodeContainer, {
                 text: text,
@@ -94,7 +106,7 @@
         function savePNG() {
             const canvas = document.querySelector('#qrcode canvas');
             if (canvas) {
-                canvas.toBlob(function(blob) {
+                canvas.toBlob(function (blob) {
                     saveAs(blob, "qrcode.png");
                 });
             } else {
@@ -106,7 +118,9 @@
             const svgElement = document.querySelector('#qrcode svg');
             if (svgElement) {
                 const svgData = new XMLSerializer().serializeToString(svgElement);
-                const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
+                const svgBlob = new Blob([svgData], {
+                    type: "image/svg+xml;charset=utf-8"
+                });
                 saveAs(svgBlob, "qrcode.svg");
             } else {
                 alert("SVG format is not available for this QR code. Please try saving as PNG.");
@@ -117,7 +131,7 @@
             const qrCodeContent = document.querySelector('#qrcode').innerHTML;
             if (qrCodeContent) {
                 const printWindow = window.open('', '', 'height=500,width=500');
-                printWindow.document.write('<html><head><title>QR Code</title></head><body>');
+                // printWindow.document.write('<html><head><title>QR Code</title></head><body>');
                 printWindow.document.write(qrCodeContent);
                 printWindow.document.write('</body></html>');
                 printWindow.document.close();
@@ -127,4 +141,6 @@
             }
         }
     </script>
-</body></html>
+    </body>
+
+</html>
