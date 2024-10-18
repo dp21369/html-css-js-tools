@@ -26,8 +26,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       padding: 30px;
-      width: 95%;
-      max-width: 1000px;
+      width: 100%;
     }
 
     .container-css-minifier h3 {
@@ -39,10 +38,11 @@
       display: flex;
       gap: 30px;
       margin-bottom: 30px;
+      position: relative;
     }
 
     .input-output>div {
-      flex: 1;
+      flex-basis: 50%;
     }
 
     textarea {
@@ -52,7 +52,7 @@
       padding: 15px;
       border: 1px solid #e0e0e0;
       border-radius: 8px;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: "Courier New", Courier, monospace;
       font-size: 14px;
       line-height: 1.5;
       transition: border-color 0.3s;
@@ -102,14 +102,25 @@
     }
 
     .arrow {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      color: #888;
+      position: absolute;
+      top: calc(50% + 45px);
+      left: 50%;
+      transform: translate(-50%, -50%);
       font-size: 24px;
-      color: #7c4dff;
+      font-weight: 400;
     }
 
-    @media (max-width: 768px) {
+    .arrow {
+      color: #CCC;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+    }
+
+    @media screen and (max-width: 768px) {
       .input-output {
         flex-direction: column;
       }
