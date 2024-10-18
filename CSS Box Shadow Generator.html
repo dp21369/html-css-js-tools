@@ -37,8 +37,8 @@
         }
 
         .preview-group {
-    padding: 40px 0;
-}
+            padding: 40px 0;
+        }
 
         .preview {
             width: 200px;
@@ -53,10 +53,10 @@
         }
 
         .input-group.box-type {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
-}
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
 
         label {
             display: block;
@@ -64,15 +64,16 @@
         }
 
         .box-type label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
- .box-type [type="checkbox"],.box-type  [type="radio"] {
-    width: 20px;
-    height: 20px;
-}
+        .box-type [type="checkbox"],
+        .box-type [type="radio"] {
+            width: 20px;
+            height: 20px;
+        }
 
         input[type="range"] {
             width: 100%;
@@ -91,14 +92,14 @@
         }
 
         .code-output {
-    background-color: #f0f0f0;
-    padding: 15px;
-    border-radius: 5px;
-    font-family: monospace;
-    white-space: pre-wrap;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
 
         .container-boxshadow button {
             padding: 10px 15px;
@@ -130,11 +131,12 @@
                     </label>
                 </div>
                 <div class="preview-group">
-                <div class="preview" id="preview"></div>
+                    <div class="preview" id="preview"></div>
                 </div>
-              
+
             </div>
-            <div> <div class="input-group">
+            <div>
+                <div class="input-group">
                     <label for="boxColor">Box Color</label>
                     <input type="color" id="boxColor" value="#474bff">
                 </div>
@@ -142,7 +144,7 @@
                     <label for="shadowColor">Shadow Color</label>
                     <input type="color" id="shadowColor" value="#dddddd">
                 </div>
-                
+
                 <div class="input-group">
                     <label for="horizontalOffset">Horizontal Offset: <span id="horizontalOffsetValue">0px</span></label>
                     <input type="range" id="horizontalOffset" min="-50" max="50" value="3">
@@ -159,10 +161,10 @@
                     <label for="spread">Spread: <span id="spreadValue">3px</span></label>
                     <input type="range" id="spread" min="-50" max="50" value="3">
                 </div>
-                
+
             </div>
         </div>
-     
+
         <div class="code-output" id="codeOutput"></div>
         <button id="copyButton">Copy CSS</button>
         <button id="resetButton">Reset</button>
