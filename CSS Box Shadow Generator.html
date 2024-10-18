@@ -1,0 +1,231 @@
+<html>
+
+<head>
+    <base href="https://example.com">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CSS Box Shadow Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container-boxshadow {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .preview-group {
+    padding: 40px 0;
+}
+
+        .preview {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: #474bff;
+            transition: all 0.3s ease;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group.box-type {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .box-type label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+ .box-type [type="checkbox"],.box-type  [type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        input[type="color"],
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0;
+            border: 0;
+            background: unset;
+            height: 50px;
+        }
+
+        .code-output {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+        .container-boxshadow button {
+            padding: 10px 15px;
+            background-color: #474bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .container-boxshadow button:hover {
+            background-color: #3a3ed6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-boxshadow">
+        <h2>CSS Box Shadow Generator</h2>
+        <div class="controls">
+            <div>
+                <div class="input-group box-type">
+                    <label>
+                        <input type="radio" name="shape" value="box" checked> Box
+                    </label>
+                    <label>
+                        <input type="radio" name="shape" value="circle"> Circle
+                    </label>
+                </div>
+                <div class="preview-group">
+                <div class="preview" id="preview"></div>
+                </div>
+              
+            </div>
+            <div> <div class="input-group">
+                    <label for="boxColor">Box Color</label>
+                    <input type="color" id="boxColor" value="#474bff">
+                </div>
+                <div class="input-group">
+                    <label for="shadowColor">Shadow Color</label>
+                    <input type="color" id="shadowColor" value="#dddddd">
+                </div>
+                
+                <div class="input-group">
+                    <label for="horizontalOffset">Horizontal Offset: <span id="horizontalOffsetValue">0px</span></label>
+                    <input type="range" id="horizontalOffset" min="-50" max="50" value="3">
+                </div>
+                <div class="input-group">
+                    <label for="verticalOffset">Vertical Offset: <span id="verticalOffsetValue">0px</span></label>
+                    <input type="range" id="verticalOffset" min="-50" max="50" value="3">
+                </div>
+                <div class="input-group">
+                    <label for="blur">Blur: <span id="blurValue">10px</span></label>
+                    <input type="range" id="blur" min="0" max="100" value="10">
+                </div>
+                <div class="input-group">
+                    <label for="spread">Spread: <span id="spreadValue">3px</span></label>
+                    <input type="range" id="spread" min="-50" max="50" value="3">
+                </div>
+                
+            </div>
+        </div>
+     
+        <div class="code-output" id="codeOutput"></div>
+        <button id="copyButton">Copy CSS</button>
+        <button id="resetButton">Reset</button>
+    </div>
+
+    <script>
+        const preview = document.getElementById('preview');
+        const codeOutput = document.getElementById('codeOutput');
+        const copyButton = document.getElementById('copyButton');
+        const resetButton = document.getElementById('resetButton');
+        const inputs = document.querySelectorAll('input');
+
+        function updateShadow() {
+            const horizontalOffset = document.getElementById('horizontalOffset').value;
+            const verticalOffset = document.getElementById('verticalOffset').value;
+            const blur = document.getElementById('blur').value;
+            const spread = document.getElementById('spread').value;
+            const shadowColor = document.getElementById('shadowColor').value;
+            const boxColor = document.getElementById('boxColor').value;
+            const shape = document.querySelector('input[name="shape"]:checked').value;
+
+            const boxShadow = `${horizontalOffset}px ${verticalOffset}px ${blur}px ${spread}px ${shadowColor}`;
+            preview.style.boxShadow = boxShadow;
+            preview.style.backgroundColor = boxColor;
+            preview.style.borderRadius = shape === 'circle' ? '50%' : '0';
+
+            const css = `box-shadow: ${boxShadow};
+background-color: ${boxColor};
+${shape === 'circle' ? 'border-radius: 50%;' : ''}`;
+
+            codeOutput.textContent = css;
+
+            document.getElementById('horizontalOffsetValue').textContent = `${horizontalOffset}px`;
+            document.getElementById('verticalOffsetValue').textContent = `${verticalOffset}px`;
+            document.getElementById('blurValue').textContent = `${blur}px`;
+            document.getElementById('spreadValue').textContent = `${spread}px`;
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', updateShadow);
+        });
+
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(codeOutput.textContent).then(() => {
+                alert('CSS copied to clipboard!');
+            });
+        });
+
+        resetButton.addEventListener('click', () => {
+            inputs.forEach(input => {
+                if (input.type === 'range') {
+                    input.value = input.defaultValue;
+                } else if (input.type === 'color') {
+                    input.value = input.defaultValue;
+                } else if (input.type === 'radio') {
+                    input.checked = input.defaultChecked;
+                }
+            });
+            updateShadow();
+        });
+
+        updateShadow();
+    </script>
+</body>
+
+</html>
