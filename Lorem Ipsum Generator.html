@@ -1,0 +1,190 @@
+<html>
+
+<head>
+    <base href="https://websimcreationengine.ai/lorem-generator/">
+    <title>Professional Lorem Ipsum Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container-lorem-generator {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .input-group label {
+            flex: 1;
+            margin-right: 1rem;
+        }
+
+        .input-group input {
+            flex: 2;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #generate {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #generate:hover {
+            background-color: #45a049;
+        }
+
+        #copy {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        #copy:hover {
+            background-color: #007B9A;
+        }
+
+        #reset {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #reset:hover {
+            background-color: #da190b;
+        }
+
+        #output {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            flex-grow: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-lorem-generator">
+        <h2>Lorem Ipsum Generator</h2>
+        <div class="input-group">
+            <label for="paragraphs">Paragraphs:</label>
+            <input type="number" id="paragraphs" min="1" max="10" value="3">
+        </div>
+        <div class="input-group">
+            <label for="words">Words per paragraph:</label>
+            <input type="number" id="words" min="10" max="100" value="50">
+        </div>
+        <div id="output"></div>
+        <div class="button-group">
+            <button id="generate">Generate</button>
+            <button id="copy">Copy Text</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const generateBtn = document.getElementById('generate');
+        const copyBtn = document.getElementById('copy');
+        const resetBtn = document.getElementById('reset');
+        const paragraphsInput = document.getElementById('paragraphs');
+        const wordsInput = document.getElementById('words');
+        const output = document.getElementById('output');
+
+        const words = [
+            'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
+            'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore',
+            'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation',
+            'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo', 'consequat', 'duis',
+            'aute', 'irure', 'dolor', 'in', 'reprehenderit', 'voluptate', 'velit', 'esse', 'cillum',
+            'dolore', 'eu', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat',
+            'non', 'proident', 'sunt', 'culpa', 'qui', 'officia', 'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum'
+        ];
+
+        function capitalize(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+
+        function generateText(paragraphs, wordsPerParagraph) {
+            let text = '';
+            for (let i = 0; i < paragraphs; i++) {
+                let paragraph = '';
+                for (let j = 0; j < wordsPerParagraph; j++) {
+                    const randomWord = words[Math.floor(Math.random() * words.length)];
+                    paragraph += j === 0 ? capitalize(randomWord) : randomWord;
+                    paragraph += j === wordsPerParagraph - 1 ? '.' : ' ';
+                }
+                text += paragraph + '\n\n';
+            }
+            return text.trim();
+        }
+
+        generateBtn.addEventListener('click', () => {
+            const paragraphs = parseInt(paragraphsInput.value);
+            const words = parseInt(wordsInput.value);
+            output.textContent = generateText(paragraphs, words);
+        });
+
+        copyBtn.addEventListener('click', () => {
+            const textToCopy = output.textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Text copied to clipboard!');
+            }, (err) => {
+                console.error('Could not copy text: ', err);
+            });
+        });
+
+        resetBtn.addEventListener('click', () => {
+            paragraphsInput.value = 3;
+            wordsInput.value = 50;
+            output.textContent = '';
+        });
+    </script>
+</body>
+
+</html>
